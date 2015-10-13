@@ -25,17 +25,17 @@ public class PasienController {
 	@Autowired
 	private PasienService pasienService;
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggunganString}")
+	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggungan}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable String tanggunganString) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.daftar(idPenduduk, Tanggungan.valueOf(tanggunganString));
+	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Tanggungan tanggungan) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.daftar(idPenduduk, tanggungan);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/kelas/{kelas}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> convertPasien(@PathVariable Long id, @PathVariable String kelasString) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.convert(id, Kelas.valueOf(kelasString));
+	public EntityRestMessage<Pasien> convertPasien(@PathVariable Long id, @PathVariable Kelas kelas) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.convert(id, kelas);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
@@ -48,7 +48,7 @@ public class PasienController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/kode/{kode}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> get(String kode) throws ApplicationException, PersistenceException {
+	public EntityRestMessage<Pasien> get(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		Pasien pasien = pasienService.get(kode);
 		return  EntityRestMessage.createPasien(pasien);
 	}
