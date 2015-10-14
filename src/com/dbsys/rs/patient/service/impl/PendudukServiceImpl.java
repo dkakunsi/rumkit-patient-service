@@ -20,10 +20,8 @@ public class PendudukServiceImpl implements PendudukService {
 	@Override
 	@Transactional(readOnly = false)
 	public Penduduk save(Penduduk penduduk) {
-		if (penduduk.getKode() == null) {
-			Integer kode = Math.abs(penduduk.hashCode());
-			penduduk.setKode(kode.toString());
-		}
+		if (penduduk.getKode() == null)
+			penduduk.generateKode();
 		return pendudukRepository.save(penduduk);
 	}
 

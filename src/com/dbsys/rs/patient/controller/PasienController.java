@@ -1,5 +1,8 @@
 package com.dbsys.rs.patient.controller;
 
+import java.sql.Date;
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dbsys.rs.lib.ApplicationException;
 import com.dbsys.rs.lib.EntityRestMessage;
 import com.dbsys.rs.lib.Kelas;
+import com.dbsys.rs.lib.ListEntityRestMessage;
 import com.dbsys.rs.lib.RestMessage;
 import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
@@ -25,10 +29,10 @@ public class PasienController {
 	@Autowired
 	private PasienService pasienService;
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggungan}")
+	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggungan}/tanggal/{tanggal}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Tanggungan tanggungan) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.daftar(idPenduduk, tanggungan);
+	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Tanggungan tanggungan, @PathVariable Date tanggal) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.daftar(idPenduduk, tanggungan, tanggal);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
@@ -51,6 +55,13 @@ public class PasienController {
 	public EntityRestMessage<Pasien> get(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		Pasien pasien = pasienService.get(kode);
 		return  EntityRestMessage.createPasien(pasien);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/penduduk/{id}")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> getByPenduduk(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		List<Pasien> list = pasienService.getByPenduduk(id);
+		return ListEntityRestMessage.createListPasien(list);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/test/test")

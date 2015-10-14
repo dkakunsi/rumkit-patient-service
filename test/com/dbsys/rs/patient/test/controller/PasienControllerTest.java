@@ -68,7 +68,7 @@ public class PasienControllerTest {
 		penduduk.setTelepon("Telepon");
 		penduduk = pendudukService.save(penduduk);
 
-		pasien = pasienService.daftar(penduduk.getId(), Tanggungan.BPJS);
+		pasien = pasienService.daftar(penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate());
 
 		assertEquals(count + 1, pasienRepository.count());
 	}	
@@ -76,10 +76,12 @@ public class PasienControllerTest {
 	@Test
 	public void testDaftar() throws Exception {
 		this.mockMvc.perform(
-				post(String.format("/pasien/penduduk/%d/tanggungan/%s", penduduk.getId(), Tanggungan.BPJS))
+				post(String.format("/pasien/penduduk/%d/tanggungan/%s/tanggal/%s", penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate()))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
+			.andExpect(jsonPath("$.model.tipe").value("RAWAT_JALAN"))
+			.andExpect(jsonPath("$.model.status").value("OPEN"))
 			.andExpect(jsonPath("$.message").value("Berhasil"));
 		
 		assertEquals(count + 2, pasienRepository.count());
@@ -92,6 +94,8 @@ public class PasienControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
+			.andExpect(jsonPath("$.model.tipe").value("RAWAT_INAP"))
+			.andExpect(jsonPath("$.model.kelas").value("I"))
 			.andExpect(jsonPath("$.message").value("Berhasil"));
 		
 		assertEquals(count + 1, pasienRepository.count());
@@ -114,6 +118,16 @@ public class PasienControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
+			.andExpect(jsonPath("$.message").value("Berhasil"));
+	}
+
+	@Test
+	public void testGetByPenduduk() throws Exception {
+		this.mockMvc.perform(
+				get(String.format("/pasien/penduduk/%d", penduduk.getId()))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(jsonPath("$.tipe").value("LIST"))
 			.andExpect(jsonPath("$.message").value("Berhasil"));
 	}
 }

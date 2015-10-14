@@ -1,5 +1,8 @@
 package com.dbsys.rs.patient.service;
 
+import java.sql.Date;
+import java.util.List;
+
 import com.dbsys.rs.lib.Kelas;
 import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
@@ -20,7 +23,7 @@ public interface PasienService {
 	 * 
 	 * @return pasien yang sudah tersimpan
 	 */
-	Pasien daftar(Long idPenduduk, Tanggungan tanggungan);
+	Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal);
 
 	/**
 	 * Ubah pasien Rawat Jalan menjadi Pasien Rawat Inap.
@@ -49,5 +52,14 @@ public interface PasienService {
 	 * @return pasien
 	 */
 	Pasien get(String kode);
+
+	/**
+	 * Mengambil data pasien berdasarkan id penduduk.
+	 * 
+	 * @param id
+	 * 
+	 * @return daftar pasien
+	 */
+	List<Pasien> getByPenduduk(Long id);
 	
 }
