@@ -68,7 +68,7 @@ public class PasienControllerTest {
 		penduduk.setTelepon("Telepon");
 		penduduk = pendudukService.save(penduduk);
 
-		pasien = pasienService.daftar(penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate());
+		pasien = pasienService.daftar(penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate(), "PAS01");
 
 		assertEquals(count + 1, pasienRepository.count());
 	}	
@@ -76,7 +76,7 @@ public class PasienControllerTest {
 	@Test
 	public void testDaftar() throws Exception {
 		this.mockMvc.perform(
-				post(String.format("/pasien/penduduk/%d/tanggungan/%s/tanggal/%s", penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate()))
+				post(String.format("/pasien/penduduk/%d/tanggungan/%s/tanggal/%s/kode/%s", penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate(), null))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))

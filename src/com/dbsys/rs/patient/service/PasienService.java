@@ -19,11 +19,14 @@ public interface PasienService {
 	 * Daftarkan pasien. Secara otomatis, pasien adalah pasien rawat jalan.
 	 * Rawat inap hanya dapat diubah oleh poliklinik.
 	 * 
-	 * @param pasien
+	 * @param idPenduduk
+	 * @param tanggungan
+	 * @param tanggal jika null generate.
+	 * @param kode jika {@code tanggungan} = BPJS, kode = kode BPJS. Selain itu, generate.
 	 * 
 	 * @return pasien yang sudah tersimpan
 	 */
-	Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal);
+	Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal, String kode);
 
 	/**
 	 * Ubah pasien Rawat Jalan menjadi Pasien Rawat Inap.

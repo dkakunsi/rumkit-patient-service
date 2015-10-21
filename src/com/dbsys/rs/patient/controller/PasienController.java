@@ -29,10 +29,10 @@ public class PasienController {
 	@Autowired
 	private PasienService pasienService;
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggungan}/tanggal/{tanggal}")
+	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggungan}/tanggal/{tanggal}/kode/{kode}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Tanggungan tanggungan, @PathVariable Date tanggal) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.daftar(idPenduduk, tanggungan, tanggal);
+	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Tanggungan tanggungan, @PathVariable Date tanggal, @PathVariable String kode) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.daftar(idPenduduk, tanggungan, tanggal, kode);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	

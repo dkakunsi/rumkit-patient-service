@@ -28,7 +28,7 @@ public class PasienServiceImpl implements PasienService {
 	private PendudukRepository pendudukRepository;
 	
 	@Override
-	public Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal) {
+	public Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal, String kode) {
 		Penduduk penduduk = pendudukRepository.findOne(idPenduduk);
 		
 		if (tanggal == null)
@@ -40,7 +40,10 @@ public class PasienServiceImpl implements PasienService {
 		pasien.setStatus(StatusPasien.OPEN);
 		pasien.setTipe(Type.RAWAT_JALAN);
 		pasien.setTanggalMasuk(tanggal);
-		pasien.generateKode();
+		pasien.setKode(kode);
+
+		if (tanggungan.equals(Tanggungan.UMUM) || kode == null || kode.equals("") || kode.equals("null"))
+			pasien.generateKode();
 		
 		return pasienRepository.save(pasien);
 	}
