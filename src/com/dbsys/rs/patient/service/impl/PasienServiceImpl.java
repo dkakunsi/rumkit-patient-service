@@ -1,6 +1,7 @@
 package com.dbsys.rs.patient.service.impl;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbsys.rs.lib.DateUtil;
-import com.dbsys.rs.lib.Kelas;
 import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
+import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 import com.dbsys.rs.lib.entity.Pasien.Type;
 import com.dbsys.rs.lib.entity.Penduduk;
@@ -49,12 +50,9 @@ public class PasienServiceImpl implements PasienService {
 	}
 
 	@Override
-	public Pasien convert(Long id, Kelas kelas) {
-		Pasien pasien = pasienRepository.findOne(id);
-		pasien.setTipe(Type.RAWAT_INAP);
-		pasien.setKelas(kelas);
-		
-		return pasienRepository.save(pasien);
+	public Pasien keluar(Long id, Date tanggal, Time jam, KeadaanPasien keadaan, StatusPasien status) {
+		pasienRepository.keluar(id, tanggal, keadaan, status);
+		return pasienRepository.findOne(id);
 	}
 
 	@Override
@@ -70,5 +68,10 @@ public class PasienServiceImpl implements PasienService {
 	@Override
 	public List<Pasien> getByPenduduk(Long id) {
 		return pasienRepository.findByPenduduk_Id(id);
+	}
+
+	@Override
+	public List<Pasien> getByUnit(Long id) {
+		return pasienRepository.findByPerawatan_Unit_Id(id);
 	}
 }

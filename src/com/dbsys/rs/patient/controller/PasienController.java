@@ -1,6 +1,7 @@
 package com.dbsys.rs.patient.controller;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbsys.rs.lib.ApplicationException;
 import com.dbsys.rs.lib.EntityRestMessage;
-import com.dbsys.rs.lib.Kelas;
 import com.dbsys.rs.lib.ListEntityRestMessage;
 import com.dbsys.rs.lib.RestMessage;
 import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
+import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
+import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 import com.dbsys.rs.patient.service.PasienService;
 
 @Controller
@@ -36,10 +38,11 @@ public class PasienController {
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/kelas/{kelas}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/tanggal/{tanggal}/jam/{jam}/keadaan/{keadaan}/status/{status}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> convertPasien(@PathVariable Long id, @PathVariable Kelas kelas) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.convert(id, kelas);
+	public EntityRestMessage<Pasien> keluar(@PathVariable Long id, @PathVariable Date tanggal, @PathVariable Time jam,
+			@PathVariable KeadaanPasien keadaan, @PathVariable StatusPasien status) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.keluar(id, tanggal, jam, keadaan, status);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
@@ -61,6 +64,13 @@ public class PasienController {
 	@ResponseBody
 	public ListEntityRestMessage<Pasien> getByPenduduk(@PathVariable Long id) throws ApplicationException, PersistenceException {
 		List<Pasien> list = pasienService.getByPenduduk(id);
+		return ListEntityRestMessage.createListPasien(list);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/unit/{id}")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> getByUnit(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		List<Pasien> list = pasienService.getByUnit(id);
 		return ListEntityRestMessage.createListPasien(list);
 	}
 	

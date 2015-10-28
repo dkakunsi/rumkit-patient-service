@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,9 @@ import com.dbsys.rs.lib.DateUtil;
 import com.dbsys.rs.lib.Kelas;
 import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
+import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 import com.dbsys.rs.lib.entity.Penduduk;
+import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.lib.entity.Penduduk.Kelamin;
 import com.dbsys.rs.patient.repository.PasienRepository;
 import com.dbsys.rs.patient.service.PasienService;
@@ -62,8 +65,8 @@ public class PasienControllerTest {
 		penduduk.setAgama("Kristen");
 		penduduk.setDarah("O");
 		penduduk.setKelamin(Kelamin.PRIA);
-		penduduk.setNama("Penduduk 1");
-		penduduk.setNik("Nik 1");
+		penduduk.setNama("Penduduk 1111111111");
+		penduduk.setNik("Nik 1111111111");
 		penduduk.setTanggalLahir(DateUtil.getDate());
 		penduduk.setTelepon("Telepon");
 		penduduk = pendudukService.save(penduduk);
@@ -88,15 +91,33 @@ public class PasienControllerTest {
 	}
 
 	@Test
-	public void testConvertPasien() throws Exception {
+	public void testConvert() throws Exception {
+		Integer idUnit = 3;
+		
 		this.mockMvc.perform(
-				put(String.format("/pasien/%d/kelas/%s", pasien.getId(), Kelas.I))
+				put(String.format("/pasien/%d/unit/%s/kelas/%s", pasien.getId(), idUnit, Kelas.I))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
-			.andExpect(jsonPath("$.model.tipe").value("RAWAT_INAP"))
+			.andExpect(jsonPath("$.message").value("Berhasil"))
 			.andExpect(jsonPath("$.model.kelas").value("I"))
-			.andExpect(jsonPath("$.message").value("Berhasil"));
+			.andExpect(jsonPath("$.model.ruangPerawatan.id").value(idUnit))
+			.andExpect(jsonPath("$.model.tipe").value("RAWAT_INAP"));
+		
+		assertEquals(count + 1, pasienRepository.count());
+	}
+
+	@Test
+	public void testKeluar() throws Exception {
+		this.mockMvc.perform(
+				put(String.format("/pasien/%d/tanggal/%s/jam/%s/keadaan/%s/status/%s", pasien.getId(), DateUtil.getDate(), DateUtil.getTime(), KeadaanPasien.SEMBUH, StatusPasien.PAID))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(jsonPath("$.tipe").value("ENTITY"))
+			.andExpect(jsonPath("$.message").value("Berhasil"))
+			.andExpect(jsonPath("$.model.tipe").value("RAWAT_JALAN"))
+			.andExpect(jsonPath("$.model.keadaan").value("SEMBUH"))
+			.andExpect(jsonPath("$.model.status").value("PAID"));
 		
 		assertEquals(count + 1, pasienRepository.count());
 	}
@@ -125,6 +146,19 @@ public class PasienControllerTest {
 	public void testGetByPenduduk() throws Exception {
 		this.mockMvc.perform(
 				get(String.format("/pasien/penduduk/%d", penduduk.getId()))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(jsonPath("$.tipe").value("LIST"))
+			.andExpect(jsonPath("$.message").value("Berhasil"));
+	}
+
+	@Ignore
+	@Test
+	public void testGetByUnit() throws Exception {
+		Long idUnit = 3L;
+		
+		this.mockMvc.perform(
+				get(String.format("/pasien/unit/%d", idUnit))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("LIST"))

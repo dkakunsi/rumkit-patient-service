@@ -1,11 +1,13 @@
 package com.dbsys.rs.patient.service;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
-import com.dbsys.rs.lib.Kelas;
 import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
+import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
+import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 
 /**
  * Interface untuk mengelola data pasien, baik Rawat Jalan maupun Rawat Inap.
@@ -29,14 +31,14 @@ public interface PasienService {
 	Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal, String kode);
 
 	/**
-	 * Ubah pasien Rawat Jalan menjadi Pasien Rawat Inap.
+	 * Pasien keluar rumah sakit.
 	 * 
-	 * @param pasien
-	 * @param kelas
-	 * 
-	 * @return pasien yang sudah di-convert
+	 * @param id
+	 * @param tanggal
+	 * @param jam
+	 * @return
 	 */
-	Pasien convert(Long idPasien, Kelas kelas);
+	Pasien keluar(Long id, Date tanggal, Time jam, KeadaanPasien keadaan, StatusPasien status);
 
 	/**
 	 * Mengambil data pasien.
@@ -64,5 +66,13 @@ public interface PasienService {
 	 * @return daftar pasien
 	 */
 	List<Pasien> getByPenduduk(Long id);
+
+	/**
+	 * Mengambil data pasien berdasarkan id unit.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	List<Pasien> getByUnit(Long id);
 	
 }
