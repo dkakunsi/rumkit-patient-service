@@ -54,6 +54,14 @@ public class PasienServiceImpl implements PasienService {
 		pasienRepository.keluar(id, tanggal, keadaan, status);
 		return pasienRepository.findOne(id);
 	}
+	
+	@Override
+	public Pasien bayar(Long id, Long jumlah) {
+		Pasien pasien = pasienRepository.findOne(id);
+		pasien.bayar(jumlah);
+
+		return pasienRepository.save(pasien);
+	}
 
 	@Override
 	public Pasien get(Long id) {
@@ -73,5 +81,10 @@ public class PasienServiceImpl implements PasienService {
 	@Override
 	public List<Pasien> getByUnit(Long id) {
 		return pasienRepository.findByPerawatan_Unit_Id(id);
+	}
+
+	@Override
+	public List<Pasien> cari(String keyword) {
+		return pasienRepository.findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContaining(keyword, keyword, keyword, keyword);
 	}
 }

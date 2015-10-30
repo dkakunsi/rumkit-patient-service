@@ -46,6 +46,13 @@ public class PasienController {
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/jumlah/{jumlah}")
+	@ResponseBody
+	public EntityRestMessage<Pasien> bayar(@PathVariable Long id, @PathVariable Long jumlah) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.bayar(id, jumlah);
+		return EntityRestMessage.createPasien(pasien);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	@ResponseBody
 	public EntityRestMessage<Pasien> get(@PathVariable Long id) throws ApplicationException, PersistenceException {
@@ -71,6 +78,13 @@ public class PasienController {
 	@ResponseBody
 	public ListEntityRestMessage<Pasien> getByUnit(@PathVariable Long id) throws ApplicationException, PersistenceException {
 		List<Pasien> list = pasienService.getByUnit(id);
+		return ListEntityRestMessage.createListPasien(list);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/keyword/{keyword}")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> cari(@PathVariable String keyword) throws ApplicationException, PersistenceException {
+		List<Pasien> list = pasienService.cari(keyword);
 		return ListEntityRestMessage.createListPasien(list);
 	}
 	

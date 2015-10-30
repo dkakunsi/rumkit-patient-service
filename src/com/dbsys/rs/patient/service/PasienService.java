@@ -41,6 +41,17 @@ public interface PasienService {
 	Pasien keluar(Long id, Date tanggal, Time jam, KeadaanPasien keadaan, StatusPasien status);
 
 	/**
+	 * Membayar tagihan pasien. 
+	 * Dapat menyicil.
+	 * 
+	 * @param id
+	 * @param jumlah
+	 * 
+	 * @return pasien
+	 */
+	Pasien bayar(Long id, Long jumlah);
+
+	/**
 	 * Mengambil data pasien.
 	 * 
 	 * @param id
@@ -74,5 +85,15 @@ public interface PasienService {
 	 * @return
 	 */
 	List<Pasien> getByUnit(Long id);
+
+	/**
+	 * Cari pasien berdasarkan kata kunci. 
+	 * Kata kunci dapat berupa nama, nomor rekam medik, nik, kode pasien.
+	 * 
+	 * @param keyword
+	 * 
+	 * @return daftar pasien
+	 */
+	List<Pasien> cari(String keyword);
 	
 }

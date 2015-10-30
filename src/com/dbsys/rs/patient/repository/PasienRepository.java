@@ -24,4 +24,7 @@ public interface PasienRepository extends JpaRepository<Pasien, Long> {
 	@Query("UPDATE Pasien p SET p.tanggalKeluar = :tanggal, p.keadaan = :keadaan, p.status = :status WHERE p.id = :id")
 	void keluar(@Param("id") Long id, @Param("tanggal") Date tanggal, @Param("keadaan") KeadaanPasien keadaan, @Param("status") StatusPasien status);
 
+	List<Pasien> findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContaining(
+			String nama, String nomorRekamMedik, String nik, String nomorPasien);
+
 }
