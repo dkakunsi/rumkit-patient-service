@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import com.dbsys.rs.lib.Tanggungan;
+import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
@@ -28,7 +28,7 @@ public interface PasienService {
 	 * 
 	 * @return pasien yang sudah tersimpan
 	 */
-	Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal, String kode);
+	Pasien daftar(Long idPenduduk, Penanggung penanggung, Date tanggal, String kode);
 
 	/**
 	 * Pasien keluar rumah sakit.

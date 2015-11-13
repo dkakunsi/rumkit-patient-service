@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dbsys.rs.lib.ApplicationException;
 import com.dbsys.rs.lib.EntityRestMessage;
 import com.dbsys.rs.lib.ListEntityRestMessage;
+import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.RestMessage;
-import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
@@ -31,10 +31,10 @@ public class PasienController {
 	@Autowired
 	private PasienService pasienService;
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggungan}/tanggal/{tanggal}/kode/{kode}")
+	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/penanggung/{penanggung}/tanggal/{tanggal}/kode/{kode}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Tanggungan tanggungan, @PathVariable Date tanggal, @PathVariable String kode) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.daftar(idPenduduk, tanggungan, tanggal, kode);
+	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Penanggung penanggung, @PathVariable Date tanggal, @PathVariable String kode) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.daftar(idPenduduk, penanggung, tanggal, kode);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	

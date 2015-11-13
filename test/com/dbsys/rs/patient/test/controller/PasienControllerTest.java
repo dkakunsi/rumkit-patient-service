@@ -20,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.dbsys.rs.lib.DateUtil;
-import com.dbsys.rs.lib.Kelas;
-import com.dbsys.rs.lib.Tanggungan;
+import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 import com.dbsys.rs.lib.entity.Penduduk;
@@ -71,7 +70,7 @@ public class PasienControllerTest {
 		penduduk.setTelepon("Telepon");
 		penduduk = pendudukService.save(penduduk);
 
-		pasien = pasienService.daftar(penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate(), "PAS01");
+		pasien = pasienService.daftar(penduduk.getId(), Penanggung.BPJS, DateUtil.getDate(), "PAS01");
 
 		assertEquals(count + 1, pasienRepository.count());
 	}	
@@ -79,45 +78,28 @@ public class PasienControllerTest {
 	@Test
 	public void testDaftar() throws Exception {
 		this.mockMvc.perform(
-				post(String.format("/pasien/penduduk/%d/tanggungan/%s/tanggal/%s/kode/%s", penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate(), null))
+				post(String.format("/pasien/penduduk/%d/penanggung/%s/tanggal/%s/kode/%s", penduduk.getId(), Penanggung.BPJS, DateUtil.getDate(), null))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
-			.andExpect(jsonPath("$.model.tipe").value("RAWAT_JALAN"))
-			.andExpect(jsonPath("$.model.status").value("OPEN"))
+			.andExpect(jsonPath("$.model.tipePerawatan").value("RAWAT_JALAN"))
+			.andExpect(jsonPath("$.model.status").value("PERAWATAN"))
 			.andExpect(jsonPath("$.message").value("Berhasil"));
 		
 		assertEquals(count + 2, pasienRepository.count());
 	}
 
 	@Test
-	public void testConvert() throws Exception {
-		Integer idUnit = 3;
-		
-		this.mockMvc.perform(
-				put(String.format("/pasien/%d/unit/%s/kelas/%s", pasien.getId(), idUnit, Kelas.I))
-				.contentType(MediaType.APPLICATION_JSON)
-			)
-			.andExpect(jsonPath("$.tipe").value("ENTITY"))
-			.andExpect(jsonPath("$.message").value("Berhasil"))
-			.andExpect(jsonPath("$.model.kelas").value("I"))
-			.andExpect(jsonPath("$.model.ruangPerawatan.id").value(idUnit))
-			.andExpect(jsonPath("$.model.tipe").value("RAWAT_INAP"));
-		
-		assertEquals(count + 1, pasienRepository.count());
-	}
-
-	@Test
 	public void testKeluar() throws Exception {
 		this.mockMvc.perform(
-				put(String.format("/pasien/%d/tanggal/%s/jam/%s/keadaan/%s/status/%s", pasien.getId(), DateUtil.getDate(), DateUtil.getTime(), KeadaanPasien.SEMBUH, StatusPasien.PAID))
+				put(String.format("/pasien/%d/tanggal/%s/jam/%s/keadaan/%s/status/%s", pasien.getId(), DateUtil.getDate(), DateUtil.getTime(), KeadaanPasien.SEMBUH, StatusPasien.LUNAS))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
 			.andExpect(jsonPath("$.message").value("Berhasil"))
-			.andExpect(jsonPath("$.model.tipe").value("RAWAT_JALAN"))
+			.andExpect(jsonPath("$.model.tipePerawatan").value("RAWAT_JALAN"))
 			.andExpect(jsonPath("$.model.keadaan").value("SEMBUH"))
-			.andExpect(jsonPath("$.model.status").value("PAID"));
+			.andExpect(jsonPath("$.model.status").value("LUNAS"));
 		
 		assertEquals(count + 1, pasienRepository.count());
 	}

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbsys.rs.lib.DateUtil;
-import com.dbsys.rs.lib.Tanggungan;
+import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
-import com.dbsys.rs.lib.entity.Pasien.Type;
+import com.dbsys.rs.lib.entity.Pasien.Perawatan;
 import com.dbsys.rs.lib.entity.Penduduk;
 import com.dbsys.rs.patient.repository.PasienRepository;
 import com.dbsys.rs.patient.repository.PendudukRepository;
@@ -29,7 +29,7 @@ public class PasienServiceImpl implements PasienService {
 	private PendudukRepository pendudukRepository;
 	
 	@Override
-	public Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal, String kode) {
+	public Pasien daftar(Long idPenduduk, Penanggung penanggung, Date tanggal, String kode) {
 		Penduduk penduduk = pendudukRepository.findOne(idPenduduk);
 		
 		if (tanggal == null)
@@ -37,13 +37,13 @@ public class PasienServiceImpl implements PasienService {
 
 		Pasien pasien = new Pasien();
 		pasien.setPenduduk(penduduk);
-		pasien.setTanggungan(tanggungan);
-		pasien.setStatus(StatusPasien.OPEN);
-		pasien.setTipe(Type.RAWAT_JALAN);
+		pasien.setPenanggung(penanggung);
+		pasien.setStatus(StatusPasien.PERAWATAN);
+		pasien.setTipePerawatan(Perawatan.RAWAT_JALAN);
 		pasien.setTanggalMasuk(tanggal);
 		pasien.setKode(kode);
 
-		if (tanggungan.equals(Tanggungan.UMUM) || kode == null || kode.equals("") || kode.equals("null"))
+		if (penanggung.equals(Penanggung.UMUM) || kode == null || kode.equals("") || kode.equals("null"))
 			pasien.generateKode();
 		
 		return pasienRepository.save(pasien);
