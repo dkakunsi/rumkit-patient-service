@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbsys.rs.lib.ApplicationException;
 import com.dbsys.rs.lib.EntityRestMessage;
+import com.dbsys.rs.lib.Kelas;
 import com.dbsys.rs.lib.ListEntityRestMessage;
 import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.RestMessage;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
+import com.dbsys.rs.lib.entity.Pasien.Pendaftaran;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 import com.dbsys.rs.patient.service.PasienService;
 
@@ -31,10 +33,10 @@ public class PasienController {
 	@Autowired
 	private PasienService pasienService;
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/penanggung/{penanggung}/tanggal/{tanggal}/kode/{kode}")
+	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/penanggung/{penanggung}/tanggal/{tanggal}/kode/{kode}/pendaftaran/{pendaftaran}/kelas/{kelas}/tujuan/{tujuan}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Penanggung penanggung, @PathVariable Date tanggal, @PathVariable String kode) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.daftar(idPenduduk, penanggung, tanggal, kode);
+	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Penanggung penanggung, @PathVariable Date tanggal, @PathVariable String kode, @PathVariable Pendaftaran pendaftaran, @PathVariable Kelas kelas, @PathVariable Long tujuan) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.daftar(idPenduduk, penanggung, tanggal, kode, pendaftaran, kelas, tujuan);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
