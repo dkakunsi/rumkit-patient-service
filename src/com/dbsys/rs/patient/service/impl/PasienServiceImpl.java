@@ -24,7 +24,7 @@ import com.dbsys.rs.patient.repository.UnitRepository;
 import com.dbsys.rs.patient.service.PasienService;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class PasienServiceImpl implements PasienService {
 
 	@Autowired
@@ -35,6 +35,7 @@ public class PasienServiceImpl implements PasienService {
 	private UnitRepository unitRepository;
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pasien daftar(Long idPenduduk, Penanggung penanggung, Date tanggal, String kode, Pendaftaran pendaftaran, Kelas kelas, Long idTujuan) {
 		Pasien pasien = new Pasien();
 		pasien.setStatus(StatusPasien.PERAWATAN);
@@ -63,12 +64,14 @@ public class PasienServiceImpl implements PasienService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pasien keluar(Long id, Date tanggal, Time jam, KeadaanPasien keadaan, StatusPasien status) {
 		pasienRepository.keluar(id, tanggal, keadaan, status);
 		return pasienRepository.findOne(id);
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pasien bayar(Long id, Long jumlah) {
 		Pasien pasien = pasienRepository.findOne(id);
 		pasien.bayar(jumlah);
