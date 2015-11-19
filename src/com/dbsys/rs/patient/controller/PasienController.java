@@ -55,6 +55,13 @@ public class PasienController {
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/kelas/{kelas}")
+	@ResponseBody
+	public RestMessage ubahKelas(@PathVariable Long id, @PathVariable Kelas kelas) throws ApplicationException, PersistenceException {
+		pasienService.ubahKelas(id, kelas);
+		return RestMessage.success();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	@ResponseBody
 	public EntityRestMessage<Pasien> get(@PathVariable Long id) throws ApplicationException, PersistenceException {

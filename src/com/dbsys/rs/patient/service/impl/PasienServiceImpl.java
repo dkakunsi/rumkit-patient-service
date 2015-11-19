@@ -78,6 +78,11 @@ public class PasienServiceImpl implements PasienService {
 
 		return pasienRepository.save(pasien);
 	}
+	
+	@Override
+	public void ubahKelas(Long id, Kelas kelas) {
+		pasienRepository.ubahKelas(id, kelas);
+	}
 
 	@Override
 	public Pasien get(Long id) {

@@ -98,5 +98,13 @@ public interface PasienService {
 	 * @return daftar pasien
 	 */
 	List<Pasien> cari(String keyword);
+
+	/**
+	 * Ubah kelas pasien.
+	 * 
+	 * @param id
+	 * @param kelas
+	 */
+	void ubahKelas(Long id, Kelas kelas);
 	
 }
