@@ -100,6 +100,17 @@ public interface PasienService {
 	List<Pasien> cari(String keyword);
 
 	/**
+	 * Cari pasien berdasarkan kata kunci. 
+	 * Kata kunci dapat berupa nama, nomor rekam medik, nik, kode pasien.
+	 * 
+	 * @param keyword
+	 * @param status
+	 * 
+	 * @return daftar pasien
+	 */
+	List<Pasien> cari(String keyword, StatusPasien status);
+
+	/**
 	 * Ubah kelas pasien.
 	 * 
 	 * @param id

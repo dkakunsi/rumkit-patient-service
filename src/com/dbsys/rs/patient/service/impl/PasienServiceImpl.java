@@ -108,4 +108,9 @@ public class PasienServiceImpl implements PasienService {
 	public List<Pasien> cari(String keyword) {
 		return pasienRepository.findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContaining(keyword, keyword, keyword, keyword);
 	}
+
+	@Override
+	public List<Pasien> cari(String keyword, StatusPasien status) {
+		return pasienRepository.findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContainingAndStatus(keyword, keyword, keyword, keyword, status);
+	}
 }
