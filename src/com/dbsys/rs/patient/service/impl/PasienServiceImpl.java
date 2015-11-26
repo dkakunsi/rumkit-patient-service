@@ -115,6 +115,7 @@ public class PasienServiceImpl implements PasienService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void hapus(Long id) {
 		pasienRepository.delete(id);
 	}
