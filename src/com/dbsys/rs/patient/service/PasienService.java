@@ -117,5 +117,7 @@ public interface PasienService {
 	 * @param kelas
 	 */
 	void ubahKelas(Long id, Kelas kelas);
+
+	void hapus(Long id);
 	
 }

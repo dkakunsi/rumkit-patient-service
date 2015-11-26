@@ -62,6 +62,13 @@ public class PasienController {
 		return RestMessage.success();
 	}
 	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	@ResponseBody
+	public RestMessage hapus(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		pasienService.hapus(id);
+		return  RestMessage.success();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	@ResponseBody
 	public EntityRestMessage<Pasien> get(@PathVariable Long id) throws ApplicationException, PersistenceException {

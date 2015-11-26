@@ -113,4 +113,9 @@ public class PasienServiceImpl implements PasienService {
 	public List<Pasien> cari(String keyword, StatusPasien status) {
 		return pasienRepository.findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContainingAndStatus(keyword, keyword, keyword, keyword, status);
 	}
+
+	@Override
+	public void hapus(Long id) {
+		pasienRepository.delete(id);
+	}
 }
