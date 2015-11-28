@@ -111,6 +111,7 @@ public class PasienServiceImpl implements PasienService {
 
 	@Override
 	public List<Pasien> cari(String keyword, StatusPasien status) {
+		keyword = String.format("%s%s%s", "%", keyword, "%");
 		return pasienRepository.findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContainingAndStatus(keyword, keyword, keyword, keyword, status);
 	}
 

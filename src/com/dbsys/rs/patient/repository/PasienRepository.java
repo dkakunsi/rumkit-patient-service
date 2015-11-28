@@ -32,7 +32,9 @@ public interface PasienRepository extends JpaRepository<Pasien, Long> {
 	List<Pasien> findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContaining(
 			String nama, String nomorRekamMedik, String nik, String nomorPasien);
 
+	@Query("FROM Pasien p WHERE (p.penduduk.nama LIKE :nama OR p.penduduk.kode LIKE :medrek OR p.penduduk.nik LIKE :nik OR p.kode LIKE :kode) AND p.status = :status")
 	List<Pasien> findByPenduduk_NamaContainingOrPenduduk_KodeContainingOrPenduduk_NikContainingOrKodeContainingAndStatus(
-			String nama, String nomorRekamMedik, String nik, String nomorPasien, StatusPasien status);
+			@Param("nama") String nama, @Param("medrek") String nomorRekamMedik, 
+			@Param("nik") String nik, @Param("kode") String nomorPasien, @Param("status") StatusPasien status);
 
 }

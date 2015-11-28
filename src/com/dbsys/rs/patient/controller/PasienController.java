@@ -107,7 +107,7 @@ public class PasienController {
 	@RequestMapping(method = RequestMethod.GET, value = "/keyword/{keyword}/guest")
 	@ResponseBody
 	public ListEntityRestMessage<Pasien> cariGuest(@PathVariable String keyword) throws ApplicationException, PersistenceException {
-		List<Pasien> list = pasienService.cari(keyword, StatusPasien.KELUAR);
+		List<Pasien> list = pasienService.cari(keyword, StatusPasien.PERAWATAN);
 		return ListEntityRestMessage.createListPasien(list);
 	}
 	
