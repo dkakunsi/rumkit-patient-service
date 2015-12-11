@@ -83,6 +83,11 @@ public class PasienServiceImpl implements PasienService {
 	public void ubahKelas(Long id, Kelas kelas) {
 		pasienRepository.ubahKelas(id, kelas);
 	}
+	
+	@Override
+	public void ubahPenanggung(Long id, Penanggung penanggung) {
+		pasienRepository.ubahPenanggung(id, penanggung);
+	}
 
 	@Override
 	public Pasien get(Long id) {

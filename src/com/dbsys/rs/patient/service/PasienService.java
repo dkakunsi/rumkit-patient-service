@@ -118,6 +118,14 @@ public interface PasienService {
 	 */
 	void ubahKelas(Long id, Kelas kelas);
 
+	/**
+	 * Ubah penanggung pasien.
+	 * 
+	 * @param id
+	 * @param penanggung BPJS/UMUM
+	 */
+	void ubahPenanggung(Long id, Penanggung penanggung);
+
 	void hapus(Long id);
 	
 }

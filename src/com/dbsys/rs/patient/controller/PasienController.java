@@ -62,6 +62,13 @@ public class PasienController {
 		return RestMessage.success();
 	}
 	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/penanggung/{penanggung}")
+	@ResponseBody
+	public RestMessage ubahKelas(@PathVariable Long id, @PathVariable Penanggung penanggung) throws ApplicationException, PersistenceException {
+		pasienService.ubahPenanggung(id, penanggung);
+		return RestMessage.success();
+	}
+	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	@ResponseBody
 	public RestMessage hapus(@PathVariable Long id) throws ApplicationException, PersistenceException {
