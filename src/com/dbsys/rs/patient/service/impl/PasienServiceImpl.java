@@ -125,4 +125,19 @@ public class PasienServiceImpl implements PasienService {
 	public void hapus(Long id) {
 		pasienRepository.delete(id);
 	}
+
+	@Override
+	public Pasien simpan(Pasien pasien) {
+		return pasienRepository.save(pasien);
+	}
+
+	@Override
+	public List<Pasien> getByMedrek(String nomorMedrek) {
+		return pasienRepository.findByPenduduk_Kode(nomorMedrek);
+	}
+
+	@Override
+	public List<Pasien> get(Date awal, Date akhir) {
+		return pasienRepository.findByTanggalMasukBetween(awal, akhir);
+	}
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +33,13 @@ public class PasienController {
 
 	@Autowired
 	private PasienService pasienService;
+
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseBody
+	public EntityRestMessage<Pasien> simpan(@RequestBody Pasien pasien) throws ApplicationException, PersistenceException {
+		pasien = pasienService.simpan(pasien);
+		return EntityRestMessage.createPasien(pasien);
+	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/penanggung/{penanggung}/tanggal/{tanggal}/kode/{kode}/pendaftaran/{pendaftaran}/kelas/{kelas}/tujuan/{tujuan}")
 	@ResponseBody
@@ -101,6 +109,20 @@ public class PasienController {
 	@ResponseBody
 	public ListEntityRestMessage<Pasien> getByUnit(@PathVariable Long id) throws ApplicationException, PersistenceException {
 		List<Pasien> list = pasienService.getByUnit(id);
+		return ListEntityRestMessage.createListPasien(list);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/medrek/{nomorMedrek}")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> getByMedrek(@PathVariable String nomorMedrek) throws ApplicationContextException, PersistenceException {
+		List<Pasien> list = pasienService.getByMedrek(nomorMedrek);
+		return ListEntityRestMessage.createListPasien(list);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/{awal}/to/{akhir}")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> get(@PathVariable Date awal, @PathVariable Date akhir) throws ApplicationContextException, PersistenceException {
+		List<Pasien> list = pasienService.get(awal, akhir);
 		return ListEntityRestMessage.createListPasien(list);
 	}
 	

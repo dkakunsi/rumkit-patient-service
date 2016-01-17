@@ -42,4 +42,8 @@ public interface PasienRepository extends JpaRepository<Pasien, Long> {
 			@Param("nama") String nama, @Param("medrek") String nomorRekamMedik, 
 			@Param("nik") String nik, @Param("kode") String nomorPasien, @Param("status") StatusPasien status);
 
+	List<Pasien> findByPenduduk_Kode(String nomorMedrek);
+
+	List<Pasien> findByTanggalMasukBetween(Date awal, Date akhir);
+
 }
