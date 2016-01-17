@@ -83,6 +83,11 @@ public class PasienServiceImpl implements PasienService {
 	public void ubahKelas(Long id, Kelas kelas) {
 		pasienRepository.ubahKelas(id, kelas);
 	}
+	
+	@Override
+	public void ubahPenanggung(Long id, Penanggung penanggung) {
+		pasienRepository.ubahPenanggung(id, penanggung);
+	}
 
 	@Override
 	public Pasien get(Long id) {
@@ -119,5 +124,20 @@ public class PasienServiceImpl implements PasienService {
 	@Transactional(readOnly = false)
 	public void hapus(Long id) {
 		pasienRepository.delete(id);
+	}
+
+	@Override
+	public Pasien simpan(Pasien pasien) {
+		return pasienRepository.save(pasien);
+	}
+
+	@Override
+	public List<Pasien> getByMedrek(String nomorMedrek) {
+		return pasienRepository.findByPenduduk_Kode(nomorMedrek);
+	}
+
+	@Override
+	public List<Pasien> get(Date awal, Date akhir) {
+		return pasienRepository.findByTanggalMasukBetween(awal, akhir);
 	}
 }

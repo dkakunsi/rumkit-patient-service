@@ -19,6 +19,8 @@ import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
  */
 public interface PasienService {
 
+	Pasien simpan(Pasien pasien);
+
 	/**
 	 * Daftarkan pasien. Secara otomatis, pasien adalah pasien rawat jalan.
 	 * Rawat inap hanya dapat diubah oleh poliklinik.
@@ -118,6 +120,18 @@ public interface PasienService {
 	 */
 	void ubahKelas(Long id, Kelas kelas);
 
+	/**
+	 * Ubah penanggung pasien.
+	 * 
+	 * @param id
+	 * @param penanggung BPJS/UMUM
+	 */
+	void ubahPenanggung(Long id, Penanggung penanggung);
+
 	void hapus(Long id);
+
+	List<Pasien> getByMedrek(String nomorMedrek);
+
+	List<Pasien> get(Date awal, Date akhir);
 	
 }
