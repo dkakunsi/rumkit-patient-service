@@ -4,9 +4,11 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import com.dbsys.rs.lib.Tanggungan;
+import com.dbsys.rs.lib.Kelas;
+import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
+import com.dbsys.rs.lib.entity.Pasien.Pendaftaran;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 
 /**
@@ -25,10 +27,11 @@ public interface PasienService {
 	 * @param tanggungan
 	 * @param tanggal jika null generate.
 	 * @param kode jika {@code tanggungan} = BPJS, kode = kode BPJS. Selain itu, generate.
+	 * @param pendaftaran
 	 * 
 	 * @return pasien yang sudah tersimpan
 	 */
-	Pasien daftar(Long idPenduduk, Tanggungan tanggungan, Date tanggal, String kode);
+	Pasien daftar(Long idPenduduk, Penanggung penanggung, Date tanggal, String kode, Pendaftaran pendaftaran, Kelas kelas, Long idTujuan);
 
 	/**
 	 * Pasien keluar rumah sakit.
@@ -95,5 +98,26 @@ public interface PasienService {
 	 * @return daftar pasien
 	 */
 	List<Pasien> cari(String keyword);
+
+	/**
+	 * Cari pasien berdasarkan kata kunci. 
+	 * Kata kunci dapat berupa nama, nomor rekam medik, nik, kode pasien.
+	 * 
+	 * @param keyword
+	 * @param status
+	 * 
+	 * @return daftar pasien
+	 */
+	List<Pasien> cari(String keyword, StatusPasien status);
+
+	/**
+	 * Ubah kelas pasien.
+	 * 
+	 * @param id
+	 * @param kelas
+	 */
+	void ubahKelas(Long id, Kelas kelas);
+
+	void hapus(Long id);
 	
 }

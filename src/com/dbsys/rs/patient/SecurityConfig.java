@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         	.antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // untuk pre-flight request
         	.antMatchers(HttpMethod.GET, "/pasien/test/test").permitAll() // mengambil token (refresh)
+        	.antMatchers(HttpMethod.GET, "/pasien/keyword/**/guest").permitAll() // mengambil token (refresh)
 			.anyRequest().authenticated()
             .and()
         .httpBasic();

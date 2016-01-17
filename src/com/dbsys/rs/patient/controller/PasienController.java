@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbsys.rs.lib.ApplicationException;
 import com.dbsys.rs.lib.EntityRestMessage;
+import com.dbsys.rs.lib.Kelas;
 import com.dbsys.rs.lib.ListEntityRestMessage;
+import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.RestMessage;
-import com.dbsys.rs.lib.Tanggungan;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
+import com.dbsys.rs.lib.entity.Pasien.Pendaftaran;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 import com.dbsys.rs.patient.service.PasienService;
 
@@ -31,10 +33,10 @@ public class PasienController {
 	@Autowired
 	private PasienService pasienService;
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/tanggungan/{tanggungan}/tanggal/{tanggal}/kode/{kode}")
+	@RequestMapping(method = RequestMethod.POST, value = "/penduduk/{idPenduduk}/penanggung/{penanggung}/tanggal/{tanggal}/kode/{kode}/pendaftaran/{pendaftaran}/kelas/{kelas}/tujuan/{tujuan}")
 	@ResponseBody
-	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Tanggungan tanggungan, @PathVariable Date tanggal, @PathVariable String kode) throws ApplicationContextException, PersistenceException {
-		Pasien pasien = pasienService.daftar(idPenduduk, tanggungan, tanggal, kode);
+	public EntityRestMessage<Pasien> daftar(@PathVariable Long idPenduduk, @PathVariable Penanggung penanggung, @PathVariable Date tanggal, @PathVariable String kode, @PathVariable Pendaftaran pendaftaran, @PathVariable Kelas kelas, @PathVariable Long tujuan) throws ApplicationContextException, PersistenceException {
+		Pasien pasien = pasienService.daftar(idPenduduk, penanggung, tanggal, kode, pendaftaran, kelas, tujuan);
 		return EntityRestMessage.createPasien(pasien);
 	}
 	
@@ -51,6 +53,20 @@ public class PasienController {
 	public EntityRestMessage<Pasien> bayar(@PathVariable Long id, @PathVariable Long jumlah) throws ApplicationContextException, PersistenceException {
 		Pasien pasien = pasienService.bayar(id, jumlah);
 		return EntityRestMessage.createPasien(pasien);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/kelas/{kelas}")
+	@ResponseBody
+	public RestMessage ubahKelas(@PathVariable Long id, @PathVariable Kelas kelas) throws ApplicationException, PersistenceException {
+		pasienService.ubahKelas(id, kelas);
+		return RestMessage.success();
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	@ResponseBody
+	public RestMessage hapus(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		pasienService.hapus(id);
+		return  RestMessage.success();
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
@@ -85,6 +101,13 @@ public class PasienController {
 	@ResponseBody
 	public ListEntityRestMessage<Pasien> cari(@PathVariable String keyword) throws ApplicationException, PersistenceException {
 		List<Pasien> list = pasienService.cari(keyword);
+		return ListEntityRestMessage.createListPasien(list);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/keyword/{keyword}/guest")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> cariGuest(@PathVariable String keyword) throws ApplicationException, PersistenceException {
+		List<Pasien> list = pasienService.cari(keyword, StatusPasien.PERAWATAN);
 		return ListEntityRestMessage.createListPasien(list);
 	}
 	

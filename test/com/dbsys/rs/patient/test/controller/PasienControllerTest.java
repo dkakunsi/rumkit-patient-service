@@ -21,13 +21,16 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.dbsys.rs.lib.DateUtil;
 import com.dbsys.rs.lib.Kelas;
-import com.dbsys.rs.lib.Tanggungan;
+import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.entity.Pasien;
+import com.dbsys.rs.lib.entity.Unit;
+import com.dbsys.rs.lib.entity.Pasien.Pendaftaran;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
 import com.dbsys.rs.lib.entity.Penduduk;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.lib.entity.Penduduk.Kelamin;
 import com.dbsys.rs.patient.repository.PasienRepository;
+import com.dbsys.rs.patient.repository.UnitRepository;
 import com.dbsys.rs.patient.service.PasienService;
 import com.dbsys.rs.patient.service.PendudukService;
 import com.dbsys.rs.patient.test.TestConfig;
@@ -51,15 +54,24 @@ public class PasienControllerTest {
 	private PendudukService pendudukService;
 	@Autowired
 	private PasienRepository pasienRepository;
+	@Autowired
+	private UnitRepository unitRepository;
 
 	private Pasien pasien;
 	private Penduduk penduduk;
+	private Unit tujuan;
 	
 	@Before
 	public void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 		
 		count = pasienRepository.count();
+		
+		tujuan = new Unit();
+		tujuan.setNama("Unit");
+		tujuan.setBobot(1f);
+		tujuan.setTipe(Unit.TipeUnit.APOTEK_FARMASI);
+		tujuan = unitRepository.save(tujuan);
 		
 		penduduk = new Penduduk();
 		penduduk.setAgama("Kristen");
@@ -71,53 +83,56 @@ public class PasienControllerTest {
 		penduduk.setTelepon("Telepon");
 		penduduk = pendudukService.save(penduduk);
 
-		pasien = pasienService.daftar(penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate(), "PAS01");
+		pasien = pasienService.daftar(penduduk.getId(), Penanggung.BPJS, DateUtil.getDate(), "PAS01", Pendaftaran.LOKET, Kelas.I, tujuan.getId());
 
 		assertEquals(count + 1, pasienRepository.count());
 	}	
 
 	@Test
-	public void testDaftar() throws Exception {
+	public void testDaftarLoket() throws Exception {
 		this.mockMvc.perform(
-				post(String.format("/pasien/penduduk/%d/tanggungan/%s/tanggal/%s/kode/%s", penduduk.getId(), Tanggungan.BPJS, DateUtil.getDate(), null))
+				post(String.format("/pasien/penduduk/%d/penanggung/%s/tanggal/%s/kode/%s/pendaftaran/%s/kelas/%s/tujuan/%d", penduduk.getId(), Penanggung.BPJS, DateUtil.getDate(), null, Pendaftaran.LOKET, Kelas.I, tujuan.getId()))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
-			.andExpect(jsonPath("$.model.tipe").value("RAWAT_JALAN"))
-			.andExpect(jsonPath("$.model.status").value("OPEN"))
+			.andExpect(jsonPath("$.model.status").value("PERAWATAN"))
+			.andExpect(jsonPath("$.model.kelas").value("I"))
+			.andExpect(jsonPath("$.model.penanggung").value("BPJS"))
+			.andExpect(jsonPath("$.model.pendaftaran").value("LOKET"))
+			.andExpect(jsonPath("$.model.tipePerawatan").value("RAWAT_JALAN"))
 			.andExpect(jsonPath("$.message").value("Berhasil"));
 		
 		assertEquals(count + 2, pasienRepository.count());
 	}
 
 	@Test
-	public void testConvert() throws Exception {
-		Integer idUnit = 3;
-		
+	public void testDaftarUgd() throws Exception {
 		this.mockMvc.perform(
-				put(String.format("/pasien/%d/unit/%s/kelas/%s", pasien.getId(), idUnit, Kelas.I))
+				post(String.format("/pasien/penduduk/%d/penanggung/%s/tanggal/%s/kode/%s/pendaftaran/%s/kelas/%s/tujuan/%d", penduduk.getId(), Penanggung.BPJS, DateUtil.getDate(), null, Pendaftaran.UGD, Kelas.I, tujuan.getId()))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
-			.andExpect(jsonPath("$.message").value("Berhasil"))
+			.andExpect(jsonPath("$.model.status").value("PERAWATAN"))
 			.andExpect(jsonPath("$.model.kelas").value("I"))
-			.andExpect(jsonPath("$.model.ruangPerawatan.id").value(idUnit))
-			.andExpect(jsonPath("$.model.tipe").value("RAWAT_INAP"));
+			.andExpect(jsonPath("$.model.penanggung").value("BPJS"))
+			.andExpect(jsonPath("$.model.pendaftaran").value("UGD"))
+			.andExpect(jsonPath("$.model.tipePerawatan").value("UGD"))
+			.andExpect(jsonPath("$.message").value("Berhasil"));
 		
-		assertEquals(count + 1, pasienRepository.count());
+		assertEquals(count + 2, pasienRepository.count());
 	}
 
 	@Test
 	public void testKeluar() throws Exception {
 		this.mockMvc.perform(
-				put(String.format("/pasien/%d/tanggal/%s/jam/%s/keadaan/%s/status/%s", pasien.getId(), DateUtil.getDate(), DateUtil.getTime(), KeadaanPasien.SEMBUH, StatusPasien.PAID))
+				put(String.format("/pasien/%d/tanggal/%s/jam/%s/keadaan/%s/status/%s", pasien.getId(), DateUtil.getDate(), DateUtil.getTime(), KeadaanPasien.SEMBUH, StatusPasien.KELUAR))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
 			.andExpect(jsonPath("$.message").value("Berhasil"))
-			.andExpect(jsonPath("$.model.tipe").value("RAWAT_JALAN"))
+			.andExpect(jsonPath("$.model.tipePerawatan").value("RAWAT_JALAN"))
 			.andExpect(jsonPath("$.model.keadaan").value("SEMBUH"))
-			.andExpect(jsonPath("$.model.status").value("PAID"));
+			.andExpect(jsonPath("$.model.status").value("KELUAR"));
 		
 		assertEquals(count + 1, pasienRepository.count());
 	}
