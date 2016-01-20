@@ -133,5 +133,7 @@ public interface PasienService {
 	List<Pasien> getByMedrek(String nomorMedrek);
 
 	List<Pasien> get(Date awal, Date akhir);
+
+	void updateRuangPerawatan(String nomorPasien, Long idUnit);
 	
 }

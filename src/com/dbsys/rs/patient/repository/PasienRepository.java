@@ -13,6 +13,7 @@ import com.dbsys.rs.lib.Penanggung;
 import com.dbsys.rs.lib.entity.Pasien;
 import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
+import com.dbsys.rs.lib.entity.Unit;
 
 public interface PasienRepository extends JpaRepository<Pasien, Long> {
 
@@ -45,5 +46,9 @@ public interface PasienRepository extends JpaRepository<Pasien, Long> {
 	List<Pasien> findByPenduduk_Kode(String nomorMedrek);
 
 	List<Pasien> findByTanggalMasukBetween(Date awal, Date akhir);
+
+	@Modifying(clearAutomatically = true)
+	@Query("Update Pasien p Set p.ruangPerawatan = ?2 Where p.kode = ?1")
+	void updateRuangPerawatan(String nomorPasien, Unit unit);
 
 }

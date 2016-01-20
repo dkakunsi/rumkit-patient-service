@@ -179,4 +179,42 @@ public class PasienControllerTest {
 			.andExpect(jsonPath("$.tipe").value("LIST"))
 			.andExpect(jsonPath("$.message").value("Berhasil"));
 	}
+
+	@Test
+	public void testUpdateRuangPerawatan() throws Exception {
+		this.mockMvc.perform(
+				put(String.format("/pasien/%s/unit/%d", pasien.getKode(), tujuan.getId()))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(jsonPath("$.tipe").value("SUCCESS"))
+			.andExpect(jsonPath("$.message").value("Berhasil"));
+		
+		this.mockMvc.perform(
+				get(String.format("/pasien/%d", pasien.getId()))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(jsonPath("$.tipe").value("ENTITY"))
+			.andExpect(jsonPath("$.message").value("Berhasil"))
+			.andExpect(jsonPath("$.model.ruangPerawatan.nama").value(tujuan.getNama()));
+	}
+
+	@Test
+	public void testUpdateRuangPerawatan_KodeNotFound() throws Exception {
+		this.mockMvc.perform(
+				put(String.format("/pasien/%s/unit/%d", "kode asal", tujuan.getId()))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(jsonPath("$.tipe").value("ERROR"))
+			.andExpect(jsonPath("$.message").value("Nomor pasien yang anda masukkan tidak terdaftar"));
+	}
+
+	@Test
+	public void testUpdateRuangPerawatan_UnitNotFound() throws Exception {
+		this.mockMvc.perform(
+				put(String.format("/pasien/%s/unit/%d", pasien.getKode(), 1111))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(jsonPath("$.tipe").value("ERROR"))
+			.andExpect(jsonPath("$.message").value("Data tidak ditemukan"));
+	}
 }

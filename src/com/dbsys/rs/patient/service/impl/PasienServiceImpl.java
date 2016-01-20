@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -139,5 +141,20 @@ public class PasienServiceImpl implements PasienService {
 	@Override
 	public List<Pasien> get(Date awal, Date akhir) {
 		return pasienRepository.findByTanggalMasukBetween(awal, akhir);
+	}
+
+	@Override
+	public void updateRuangPerawatan(String nomorPasien, Long idUnit) {
+		try {
+			pasienRepository.findByKode(nomorPasien); // Cek jika nomor pasien merupakan kode salah satu pasien.
+		} catch (PersistenceException ex) {
+			throw new PersistenceException("Nomor pasien yang anda masukkan tidak terdaftar");
+		}
+		
+		Unit unit = null;
+		if (idUnit != null && !idUnit.equals(new Long(0)))
+			unit = unitRepository.findOne(idUnit);
+		
+		pasienRepository.updateRuangPerawatan(nomorPasien, unit);
 	}
 }

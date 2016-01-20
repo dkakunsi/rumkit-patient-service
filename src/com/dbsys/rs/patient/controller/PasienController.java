@@ -139,9 +139,18 @@ public class PasienController {
 		return ListEntityRestMessage.createListPasien(list);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/test/test")
+	@RequestMapping(method = RequestMethod.PUT, value = "/{nomorPasien}/unit/{idUnit}")
 	@ResponseBody
-	public RestMessage test() throws ApplicationException, PersistenceException {
+	public RestMessage masukUnit(@PathVariable String nomorPasien, @PathVariable Long idUnit) throws ApplicationException, PersistenceException {
+		pasienService.updateRuangPerawatan(nomorPasien, idUnit);
 		return RestMessage.success();
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/{nomorPasien}/unit")
+	@ResponseBody
+	public RestMessage keluarUnit(@PathVariable String nomorPasien) throws ApplicationException, PersistenceException {
+		pasienService.updateRuangPerawatan(nomorPasien, null);
+		return RestMessage.success();
+	}
+	
 }
