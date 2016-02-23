@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbsys.rs.lib.DateUtil;
 import com.dbsys.rs.lib.entity.Penduduk;
 import com.dbsys.rs.patient.repository.PendudukRepository;
 import com.dbsys.rs.patient.service.PendudukService;
@@ -22,6 +23,9 @@ public class PendudukServiceImpl implements PendudukService {
 	public Penduduk save(Penduduk penduduk) {
 		if (penduduk.getKode() == null)
 			penduduk.generateKode();
+		if (penduduk.getTanggalDaftar() == null)
+			penduduk.setTanggalDaftar(DateUtil.getDate());
+		
 		return pendudukRepository.save(penduduk);
 	}
 
