@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbsys.rs.lib.DateUtil;
-import com.dbsys.rs.lib.entity.Penduduk;
+import com.dbsys.rs.DateUtil;
+import com.dbsys.rs.patient.entity.Penduduk;
 import com.dbsys.rs.patient.repository.PendudukRepository;
 import com.dbsys.rs.patient.service.PendudukService;
 

@@ -4,12 +4,12 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import com.dbsys.rs.lib.Kelas;
-import com.dbsys.rs.lib.Penanggung;
-import com.dbsys.rs.lib.entity.Pasien;
-import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
-import com.dbsys.rs.lib.entity.Pasien.Pendaftaran;
-import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
+import com.dbsys.rs.Kelas;
+import com.dbsys.rs.Penanggung;
+import com.dbsys.rs.patient.entity.Pasien;
+import com.dbsys.rs.patient.entity.Pasien.KeadaanPasien;
+import com.dbsys.rs.patient.entity.Pasien.Pendaftaran;
+import com.dbsys.rs.patient.entity.Pasien.StatusPasien;
 
 /**
  * Interface untuk mengelola data pasien, baik Rawat Jalan maupun Rawat Inap.

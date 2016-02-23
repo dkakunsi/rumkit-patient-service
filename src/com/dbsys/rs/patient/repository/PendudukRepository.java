@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dbsys.rs.lib.entity.Penduduk;
+import com.dbsys.rs.patient.entity.Penduduk;
 
 public interface PendudukRepository extends JpaRepository<Penduduk, Long> {
 

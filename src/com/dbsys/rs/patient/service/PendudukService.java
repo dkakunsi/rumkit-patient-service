@@ -2,7 +2,7 @@ package com.dbsys.rs.patient.service;
 
 import java.util.List;
 
-import com.dbsys.rs.lib.entity.Penduduk;
+import com.dbsys.rs.patient.entity.Penduduk;
 
 /**
  * Interface untuk mengelola data penduduk.

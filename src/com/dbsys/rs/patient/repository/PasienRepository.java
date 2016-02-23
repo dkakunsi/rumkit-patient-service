@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.dbsys.rs.lib.Kelas;
-import com.dbsys.rs.lib.Penanggung;
-import com.dbsys.rs.lib.entity.Pasien;
-import com.dbsys.rs.lib.entity.Pasien.KeadaanPasien;
-import com.dbsys.rs.lib.entity.Pasien.StatusPasien;
-import com.dbsys.rs.lib.entity.Unit;
+import com.dbsys.rs.Kelas;
+import com.dbsys.rs.Penanggung;
+import com.dbsys.rs.patient.entity.Pasien;
+import com.dbsys.rs.patient.entity.Pasien.KeadaanPasien;
+import com.dbsys.rs.patient.entity.Pasien.StatusPasien;
+import com.dbsys.rs.patient.entity.Unit;
 
 public interface PasienRepository extends JpaRepository<Pasien, Long> {
 
@@ -21,8 +21,6 @@ public interface PasienRepository extends JpaRepository<Pasien, Long> {
 
 	List<Pasien> findByPenduduk_Id(Long id);
 
-	@Deprecated
-	List<Pasien> findByPerawatan_Unit_Id(Long id);
 	List<Pasien> findByRuangPerawatan_Id(Long id);
 
 	@Modifying(clearAutomatically = true)

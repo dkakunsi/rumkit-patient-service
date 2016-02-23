@@ -19,9 +19,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.dbsys.rs.lib.DateUtil;
-import com.dbsys.rs.lib.entity.Penduduk;
-import com.dbsys.rs.lib.entity.Penduduk.Kelamin;
+import com.dbsys.rs.DateUtil;
+import com.dbsys.rs.patient.entity.Penduduk;
+import com.dbsys.rs.patient.entity.Penduduk.Kelamin;
 import com.dbsys.rs.patient.repository.PendudukRepository;
 import com.dbsys.rs.patient.service.PendudukService;
 import com.dbsys.rs.patient.test.TestConfig;
