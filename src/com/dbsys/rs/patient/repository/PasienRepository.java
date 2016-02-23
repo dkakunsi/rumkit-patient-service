@@ -21,7 +21,9 @@ public interface PasienRepository extends JpaRepository<Pasien, Long> {
 
 	List<Pasien> findByPenduduk_Id(Long id);
 
+	@Deprecated
 	List<Pasien> findByPerawatan_Unit_Id(Long id);
+	List<Pasien> findByRuangPerawatan_Id(Long id);
 
 	@Modifying(clearAutomatically = true)
 	@Query("UPDATE Pasien p SET p.tanggalKeluar = :tanggal, p.keadaan = :keadaan, p.status = :status WHERE p.id = :id")

@@ -108,7 +108,7 @@ public class PasienServiceImpl implements PasienService {
 
 	@Override
 	public List<Pasien> getByUnit(Long id) {
-		return pasienRepository.findByPerawatan_Unit_Id(id);
+		return pasienRepository.findByRuangPerawatan_Id(id);
 	}
 
 	@Override
