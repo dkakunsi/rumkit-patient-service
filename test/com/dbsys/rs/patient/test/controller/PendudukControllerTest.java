@@ -71,6 +71,7 @@ public class PendudukControllerTest {
 				post("/penduduk")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"agama\": \"Kristen\","
+						+ "\"kode\": \"000111\","
 						+ "\"darah\": \"O\","
 						+ "\"kelamin\": \"PRIA\","
 						+ "\"nama\":\"Penduduk 2\","
