@@ -3,6 +3,7 @@ package com.dbsys.rs.patient.test.controller;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +80,9 @@ public class PendudukControllerTest {
 						
 			)
 			.andExpect(jsonPath("$.tipe").value("ENTITY"))
-			.andExpect(jsonPath("$.message").value("Berhasil"));
+			.andExpect(jsonPath("$.message").value("Berhasil"))
+			.andDo(print());
+		
 		
 		assertEquals(count + 2, pendudukRepository.count());
 	}

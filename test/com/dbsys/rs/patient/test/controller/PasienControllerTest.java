@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +83,7 @@ public class PasienControllerTest {
 		penduduk = pendudukService.save(penduduk);
 
 		pasien = pasienService.daftar(penduduk.getId(), Penanggung.BPJS, DateUtil.getDate(), "PAS01", Pendaftaran.LOKET, Kelas.I, tujuan.getId());
+		pasienService.updateRuangPerawatan(pasien.getKode(), tujuan.getId());
 
 		assertEquals(count + 1, pasienRepository.count());
 	}	
@@ -167,13 +167,10 @@ public class PasienControllerTest {
 			.andExpect(jsonPath("$.message").value("Berhasil"));
 	}
 
-	@Ignore
 	@Test
 	public void testGetByUnit() throws Exception {
-		Long idUnit = 3L;
-		
 		this.mockMvc.perform(
-				get(String.format("/pasien/unit/%d", idUnit))
+				get(String.format("/pasien/unit/%d", tujuan.getId()))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.tipe").value("LIST"))
