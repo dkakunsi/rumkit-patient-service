@@ -57,10 +57,6 @@ public class Pasien implements Tanggungan, CodedEntity {
 
 	private Penduduk penduduk;
 	private Unit tujuan;
-	
-	/*
-	 * Digunakan untuk JSON mapping
-	 */
 	private Unit ruangPerawatan;
 	
 	public Pasien() {
