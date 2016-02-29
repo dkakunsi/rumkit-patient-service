@@ -125,6 +125,13 @@ public class PasienController {
 		return new ListEntityRestMessage<Pasien>(list);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/{awal}/to/{akhir}/pendaftaran/{pendaftaran}")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> get(@PathVariable Date awal, @PathVariable Date akhir, @PathVariable Pendaftaran pendaftaran) throws ApplicationException, PersistenceException {
+		List<Pasien> list = pasienService.get(awal, akhir, pendaftaran);
+		return new ListEntityRestMessage<Pasien>(list);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/keyword/{keyword}")
 	@ResponseBody
 	public ListEntityRestMessage<Pasien> cari(@PathVariable String keyword) throws ApplicationException, PersistenceException {

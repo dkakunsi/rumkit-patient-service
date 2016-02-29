@@ -144,6 +144,11 @@ public class PasienServiceImpl implements PasienService {
 	}
 
 	@Override
+	public List<Pasien> get(Date awal, Date akhir, Pendaftaran pendaftaran) {
+		return pasienRepository.findByTanggalMasukBetweenAndPendaftaran(awal, akhir, pendaftaran);
+	}
+
+	@Override
 	public void updateRuangPerawatan(String nomorPasien, Long idUnit) {
 		try {
 			pasienRepository.findByKode(nomorPasien); // Cek jika nomor pasien merupakan kode salah satu pasien.

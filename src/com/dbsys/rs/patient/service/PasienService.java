@@ -134,6 +134,8 @@ public interface PasienService {
 
 	List<Pasien> get(Date awal, Date akhir);
 
+	List<Pasien> get(Date awal, Date akhir, Pendaftaran pendaftaran);
+
 	void updateRuangPerawatan(String nomorPasien, Long idUnit);
 	
 }
