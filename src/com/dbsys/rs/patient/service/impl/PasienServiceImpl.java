@@ -2,6 +2,7 @@ package com.dbsys.rs.patient.service.impl;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -137,6 +138,32 @@ public class PasienServiceImpl implements PasienService {
 	public List<Pasien> getByMedrek(String nomorMedrek) {
 		return pasienRepository.findByPenduduk_Kode(nomorMedrek);
 	}
+	
+	@Override
+	public List<Pasien> getTunggakan(String nomorMedrek) {
+		List<Pasien> list = pasienRepository.findByPenduduk_Kode(nomorMedrek);
+		List<Pasien> listTunggakan = new ArrayList<>();
+
+		// menyatakan sebagai tunggakan
+		boolean flag;
+		for (Pasien pasien : list) {
+			flag = true;
+			
+			if (Penanggung.BPJS.equals(pasien.getPenanggung())) {
+				flag = false; // bukan tunggakan jika tanggungan BPJS
+			} else {
+				
+				long hutang = pasien.getTotalTagihan() - pasien.getCicilan();
+				if (hutang <= 0)
+					flag = false; // bukan tunggakan jika hutang <= 0
+			}
+
+			if (flag)
+				listTunggakan.add(pasien);
+		}
+		
+		return listTunggakan;
+	}
 
 	@Override
 	public List<Pasien> get(Date awal, Date akhir) {
@@ -149,9 +176,10 @@ public class PasienServiceImpl implements PasienService {
 	}
 
 	@Override
-	public void updateRuangPerawatan(String nomorPasien, Long idUnit) {
+	public void updatePerawatanPasien(String nomorPasien, Long idUnit) {
+		Pasien pasien;
 		try {
-			pasienRepository.findByKode(nomorPasien); // Cek jika nomor pasien merupakan kode salah satu pasien.
+			pasien = pasienRepository.findByKode(nomorPasien); // Cek jika nomor pasien merupakan kode salah satu pasien.
 		} catch (PersistenceException ex) {
 			throw new PersistenceException("Nomor pasien yang anda masukkan tidak terdaftar");
 		}
@@ -159,7 +187,17 @@ public class PasienServiceImpl implements PasienService {
 		Unit unit = null;
 		if (idUnit != null && !idUnit.equals(new Long(0)))
 			unit = unitRepository.findOne(idUnit);
-		
-		pasienRepository.updateRuangPerawatan(nomorPasien, unit);
+
+		Perawatan perawatan = Perawatan.RAWAT_INAP;
+		// Jika  pasien bukan rawat inap && tanggal rawat inap null,
+		// maka pasien baru masuk sal (baru rawat inap).
+		// Atur tanggal rawat inap, tipe perawatan.
+		if (!perawatan.equals(pasien.getTipePerawatan()) && pasien.getTanggalRawatInap() == null) {
+			Date tanggalRawatInap = DateUtil.getDate();
+
+			pasienRepository.updatePasien(nomorPasien, unit, tanggalRawatInap, perawatan);
+		} else {
+			pasienRepository.updatePasien(nomorPasien, unit);
+		}
 	}
 }

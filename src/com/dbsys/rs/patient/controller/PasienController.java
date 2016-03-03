@@ -118,6 +118,13 @@ public class PasienController {
 		return new ListEntityRestMessage<Pasien>(list);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/medrek/{nomorMedrek}/tunggakan")
+	@ResponseBody
+	public ListEntityRestMessage<Pasien> getTunggakanByMedrek(@PathVariable String nomorMedrek) throws ApplicationException, PersistenceException {
+		List<Pasien> list = pasienService.getTunggakan(nomorMedrek);
+		return new ListEntityRestMessage<Pasien>(list);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{awal}/to/{akhir}")
 	@ResponseBody
 	public ListEntityRestMessage<Pasien> get(@PathVariable Date awal, @PathVariable Date akhir) throws ApplicationException, PersistenceException {
@@ -149,14 +156,14 @@ public class PasienController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/{nomorPasien}/unit/{idUnit}")
 	@ResponseBody
 	public RestMessage masukUnit(@PathVariable String nomorPasien, @PathVariable Long idUnit) throws ApplicationException, PersistenceException {
-		pasienService.updateRuangPerawatan(nomorPasien, idUnit);
+		pasienService.updatePerawatanPasien(nomorPasien, idUnit);
 		return RestMessage.success();
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/{nomorPasien}/unit")
 	@ResponseBody
 	public RestMessage keluarUnit(@PathVariable String nomorPasien) throws ApplicationException, PersistenceException {
-		pasienService.updateRuangPerawatan(nomorPasien, null);
+		pasienService.updatePerawatanPasien(nomorPasien, null);
 		return RestMessage.success();
 	}
 	

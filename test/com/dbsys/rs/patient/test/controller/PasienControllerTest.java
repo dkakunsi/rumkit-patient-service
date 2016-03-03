@@ -83,7 +83,7 @@ public class PasienControllerTest {
 		penduduk = pendudukService.save(penduduk);
 
 		pasien = pasienService.daftar(penduduk.getId(), Penanggung.BPJS, DateUtil.getDate(), "PAS01", Pendaftaran.LOKET, Kelas.I, tujuan.getId());
-		pasienService.updateRuangPerawatan(pasien.getKode(), tujuan.getId());
+		pasienService.updatePerawatanPasien(pasien.getKode(), tujuan.getId());
 
 		assertEquals(count + 1, pasienRepository.count());
 	}	

@@ -132,10 +132,12 @@ public interface PasienService {
 
 	List<Pasien> getByMedrek(String nomorMedrek);
 
+	List<Pasien> getTunggakan(String nomorMedrek);
+
 	List<Pasien> get(Date awal, Date akhir);
 
 	List<Pasien> get(Date awal, Date akhir, Pendaftaran pendaftaran);
 
-	void updateRuangPerawatan(String nomorPasien, Long idUnit);
+	void updatePerawatanPasien(String nomorPasien, Long idUnit);
 	
 }

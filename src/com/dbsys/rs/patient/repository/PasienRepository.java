@@ -13,6 +13,7 @@ import com.dbsys.rs.Penanggung;
 import com.dbsys.rs.patient.entity.Pasien;
 import com.dbsys.rs.patient.entity.Pasien.KeadaanPasien;
 import com.dbsys.rs.patient.entity.Pasien.Pendaftaran;
+import com.dbsys.rs.patient.entity.Pasien.Perawatan;
 import com.dbsys.rs.patient.entity.Pasien.StatusPasien;
 import com.dbsys.rs.patient.entity.Unit;
 
@@ -52,6 +53,10 @@ public interface PasienRepository extends JpaRepository<Pasien, Long> {
 
 	@Modifying(clearAutomatically = true)
 	@Query("Update Pasien p Set p.ruangPerawatan = ?2 Where p.kode = ?1")
-	void updateRuangPerawatan(String nomorPasien, Unit unit);
+	void updatePasien(String nomorPasien, Unit unit);
+
+	@Modifying(clearAutomatically = true)
+	@Query("Update Pasien p Set p.ruangPerawatan = ?2, p.tanggalRawatInap = ?3, p.tipePerawatan = ?4 Where p.kode = ?1")
+	void updatePasien(String nomorPasien, Unit unit, Date tanggalRawatInap, Perawatan perawatan);
 
 }
