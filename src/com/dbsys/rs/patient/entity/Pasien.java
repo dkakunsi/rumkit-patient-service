@@ -327,6 +327,14 @@ public class Pasien implements Tanggungan, CodedEntity {
 		penduduk.setKode(kode);
 	}
 
+	
+	@Transient
+	public long getUmur() {
+		return penduduk.getUmur();
+	}
+	
+	public void setUmur(long umur){}
+	
 	public String generateKode() {
 		return createKode();
 	}

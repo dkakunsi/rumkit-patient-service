@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.dbsys.rs.CodedEntity;
 import com.dbsys.rs.DateUtil;
@@ -169,6 +170,14 @@ public class Penduduk implements CodedEntity {
 	public void setTanggalDaftar(Date tanggalDaftar) {
 		this.tanggalDaftar = tanggalDaftar;
 	}
+	
+	@Transient
+	public long getUmur() {
+		int hari = DateUtil.calculate(tanggalLahir, DateUtil.getDate());		
+		return hari / 365;
+	}
+		
+	public void setUmur(long umur){}
 
 	@Override
 	public int hashCode() {
